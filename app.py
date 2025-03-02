@@ -7,13 +7,145 @@ model = genai.GenerativeModel('gemini-2.0-flash-exp')
 
 # Page setup
 st.set_page_config(page_title="Areesha's Multi-Tool App", page_icon="💬", layout="wide")
-# st.title("Areesha's Multi-Tool App")  #ff0000  or #1f69c1
+
+# Custom CSS for light and dark themes
+def apply_theme(theme):
+    if theme == "dark":
+        st.markdown(
+            """
+            <style>
+            /* General app background and text color */
+            .stApp {
+                background-color: #1e1e1e;
+                color: #ffffff;
+            }
+            /* Top navigation bar */
+            .stApp header {
+                background-color: #1e1e1e !important;
+                color: #ffffff !important;
+            }
+            /* Buttons */
+            .stButton>button {
+                background-color: #2e2e2e;
+                color: #ffffff;
+                border: 1px solid #444;
+            }
+            /* Input fields */
+            .stTextInput>div>div>input {
+                background-color: #2e2e2e;
+                color: #ffffff;
+                border: 1px solid #444;
+            }
+            .stSelectbox>div>div>select {
+                background-color: #2e2e2e;
+                color: #ffffff;
+                border: 1px solid #444;
+            }
+            .stNumberInput>div>div>input {
+                background-color: #2e2e2e;
+                color: #ffffff;
+                border: 1px solid #444;
+            }
+            /* Labels and text */
+            .stMarkdown, .stTextLabel, .stSelectbox label, .stNumberInput label {
+                color: #ffffff !important;
+            }
+            /* Chatbot input label */
+            .stTextInput label {
+                color: #ffffff !important;
+            }
+            /* Unit converter labels */
+            .stSelectbox label, .stNumberInput label {
+                color: #ffffff !important;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            """
+            <style>
+            /* General app background and text color */
+            .stApp {
+                background-color: #ffffff;
+                color: #000000;
+            }
+            /* Top navigation bar */
+            .stApp header {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+            }
+            /* Buttons */
+            .stButton>button {
+                background-color: #f0f0f0;
+                color: #000000;
+                border: 1px solid #ccc;
+            }
+            /* Input fields */
+            .stTextInput>div>div>input {
+                background-color: #f0f0f0;
+                color: #000000;
+                border: 1px solid #ccc;
+            }
+            .stSelectbox>div>div>select {
+                background-color: #f0f0f0;
+                color: #000000;
+                border: 1px solid #ccc;
+            }
+            .stNumberInput>div>div>input {
+                background-color: #f0f0f0;
+                color: #000000;
+                border: 1px solid #ccc;
+            }
+            /* Labels and text */
+            .stMarkdown, .stTextLabel, .stSelectbox label, .stNumberInput label {
+                color: #000000 !important;
+            }
+            /* Chatbot input label */
+            .stTextInput label {
+                color: #000000 !important;
+            }
+            /* Unit converter labels */
+            .stSelectbox label, .stNumberInput label {
+                color: #000000 !important;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+
+# Initialize session state for theme
+if 'theme' not in st.session_state:
+    st.session_state.theme = "light"
+
+# Function to toggle theme
+def toggle_theme():
+    if st.session_state.theme == "light":
+        st.session_state.theme = "dark"
+    else:
+        st.session_state.theme = "light"
+
+# Apply the selected theme
+apply_theme(st.session_state.theme)
+
+# Main app title
 st.markdown("""
     <h1 style='color: #1f69c1; font-size: 48px;'>  
         Areesha's Multi-Tool App
     </h1>
 """, unsafe_allow_html=True)
 
+# Add theme toggle button with icons
+col1, col2, col3 = st.columns([5, 1, 1])
+with col2:
+    if st.button("🌞", help="Switch to Light Mode"):
+        st.session_state.theme = "light"
+        st.rerun()
+with col3:
+    if st.button("🌙", help="Switch to Dark Mode"):
+        st.session_state.theme = "dark"
+        st.rerun()
 
 # Session State for navigation
 if 'page' not in st.session_state:
@@ -38,7 +170,6 @@ if st.session_state.page == "Home Page":
         if st.button("Unit Converter"):
             st.session_state.page = "Unit Converter"
             st.rerun()
-
 
     st.markdown("---")
 
@@ -156,7 +287,4 @@ elif st.session_state.page == "Unit Converter":
 # Footer
 st.markdown("---")
 st.write("Developed by Areesha Kainat")
-
-
-
 
